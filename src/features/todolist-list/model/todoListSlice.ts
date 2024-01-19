@@ -1,29 +1,19 @@
-import { asyncThunkCreator, buildCreateSlice } from "@reduxjs/toolkit";
 import { TodoListResponseType, TodoListType } from "features/todolist-list/model/todolist.types.ts";
 import { todolistsAPI } from "features/todolist-list/api/todolistsAPI.ts";
+import { createAppSlice } from "common/utils/createAppSlice.ts";
 
 const initialState = {
   todoLists: [] as TodoListType[],
 };
 
-const createAppSlice = buildCreateSlice({
-  creators: { asyncThunk: asyncThunkCreator },
-});
+
 
 export const slice = createAppSlice({
   name: "todoList",
   initialState,
   reducers: (creators) => {
     return {
-      // setTodoLists: creators.reducer((state, action: PayloadAction<{ todoLists: TodoListResponseType[] }>) => {
-      //   return action.payload.todoLists.forEach((tl) =>
-      //     state.todoLists.push({
-      //       ...tl,
-      //       entityStatus: "idle",
-      //       filter: { prioritiesFilter: "all", statusesFilter: "all" },
-      //     }),
-      //   );
-      // }),
+
       fetchTodoLists: creators.asyncThunk<void, { todoLists: TodoListResponseType[] }>(
         async () => {
           const res = await todolistsAPI.getTodoLists();
@@ -39,9 +29,7 @@ export const slice = createAppSlice({
               }),
             );
           },
-          // rejected:(state, action)=>{
-          //
-          // }
+
         },
       ),
     };

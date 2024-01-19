@@ -3,7 +3,7 @@ import {
   PrioritiesValue,
   StatusesTitle,
   StatusesValue,
-} from "../../features/Task/model/task.types.ts";
+} from "features/Task/model/task.types.ts";
 
 export type TaskProperties<D, V> = { description: D; value: V };
 export const TASK_STATUSES: readonly TaskProperties<StatusesTitle, StatusesValue>[] = [
@@ -45,3 +45,10 @@ export const PRIORITIES: readonly TaskProperties<PrioritiesTitle, PrioritiesValu
     value: 3,
   },
 ];
+
+
+export const ResultCode = {
+  Success: 0,
+  Error: 1,
+  Captcha: 10,
+} as const;

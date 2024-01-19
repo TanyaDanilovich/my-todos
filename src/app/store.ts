@@ -1,8 +1,8 @@
 import { configureStore, ThunkAction, UnknownAction } from "@reduxjs/toolkit";
 import { todoListsSlice } from "features/todolist-list/model/todoListSlice.ts";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { authSlice } from "auth/auth-slice.ts";
-import { appSlice } from "app/app-slice.ts";
+import { authSlice } from "auth/authSlice.ts";
+import { appSlice } from "app/appSlice.ts";
 import { tasksSlice } from "features/Task/model/tasksSlice.ts";
 
 export const store = configureStore({
