@@ -1,13 +1,12 @@
 import { TaskPriorities, TaskStatuses } from "common/constants";
 
 
-
 export type TaskStatusesKeys = keyof typeof TaskStatuses;
 export type TaskPrioritiesKeys = keyof typeof TaskPriorities;
 
 
 export type TaskType = {
-  description: string;
+  description?: string;
   title: string;
   status: (typeof TaskStatuses)[TaskStatusesKeys];
   priority: (typeof TaskPriorities)[TaskPrioritiesKeys];

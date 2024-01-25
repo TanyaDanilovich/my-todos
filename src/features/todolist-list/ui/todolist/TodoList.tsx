@@ -7,6 +7,7 @@ import "style.css";
 import { tasksActions } from "features/Task/model/tasksSlice.ts";
 import { TodoListType } from "features/todolist-list/model/todolist.types.ts";
 import { todoListsActions } from "features/todolist-list/model/todoListSlice.ts";
+import { AddTask } from "common/components/AddTask/AddTaskForm.tsx";
 
 type TodoListPropsType = TodoListType;
 
@@ -22,7 +23,12 @@ export const TodoList: FC<TodoListPropsType> = ({ id, title }) => {
     dispatch(todoListsActions.deleteTodolist(id));
   };
 
+  const addTask = (title: string) => {
+    dispatch(tasksActions.createTask({ todolistId: id, taskTitle: title }));
+  };
+
   const renderedTasks = tasks.map((task) => {
+   // console.log(task);
     return (
       <Task
         key = {task.id}
@@ -71,12 +77,12 @@ export const TodoList: FC<TodoListPropsType> = ({ id, title }) => {
                     <th scope = "col" className = "text-sm font-medium text-gray-900 px-6 py-4 text-left"></th>
                   </tr>
                   </thead>
-
                   <tbody>{renderedTasks}</tbody>
                 </table>
               </div>
             </div>
           </div>
+          <AddTask addTask = {addTask} />
         </div>
       </div>
     </>

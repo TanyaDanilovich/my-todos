@@ -1,6 +1,6 @@
 import { todoListsActions } from "features/todolist-list/model/todoListSlice.ts";
 import { TaskType } from "features/Task/model/task.types.ts";
-import { tasksAPI } from "features/Task/api/tasks/tasksAPI.ts";
+import { CreateTaskArg, tasksAPI } from "features/Task/api/tasks/tasksAPI.ts";
 import { createAppSlice } from "common/utils/createAppSlice.ts";
 import { authActions } from "auth/authSlice.ts";
 
@@ -27,6 +27,26 @@ export const slice = createAppSlice({
         fulfilled: (state, action) => {
           state[action.payload.todolistId] = action.payload.tasks;
         }
+      }),
+      createTask: create.asyncThunk<CreateTaskArg, {
+        todolistId: string;
+        task: TaskType
+      }>(async ({ todolistId, taskTitle }, { rejectWithValue }) => {
+        const res = await tasksAPI.createTask({ todolistId, taskTitle });
+        if (res.data.resultCode === 0) {
+          return {
+            todolistId: todolistId,
+            task: res.data.data.item
+          };
+        } else {
+          return rejectWithValue(res.data.messages);
+        }
+
+
+      }, {
+        fulfilled: (state, action) => {
+          state[action.payload.todolistId].push(action.payload.task);
+        }
       })
     };
   }),
@@ -48,5 +68,7 @@ export const slice = createAppSlice({
 
 export const tasksSlice = slice.reducer;
 export const tasksActions = slice.actions;
+
+
 
 

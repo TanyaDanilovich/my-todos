@@ -8,7 +8,7 @@ export const todolistsAPI = {
     return instance.get<TodoListResponse[]>(todolistUrl);
 
   },
-  addTodolist: (title: string) => {
+  createTodolist: (title: string) => {
     return instance.post<AppBaseResponse<{ item: TodoListResponse }>>(todolistUrl, { title });
   },
   deleteTodolist:(todolistId:string)=>{

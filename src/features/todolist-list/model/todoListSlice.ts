@@ -38,7 +38,7 @@ export const slice = createAppSlice({
       createTodolist: creators.asyncThunk<string, {
         todolist: TodoListResponse
       }>(async (title) => {
-        const res = await todolistsAPI.addTodolist(title);
+        const res = await todolistsAPI.createTodolist(title);
         console.log(res);
         return { todolist: res.data.data.item };
       }, {
