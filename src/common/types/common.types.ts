@@ -1,4 +1,4 @@
-import { UserResponse } from "auth/api/authAPI.ts";
+import { ReactNode } from "react";
 
 
 export type StatusType = "idle" | "loading" | "success " | "error";
@@ -9,9 +9,12 @@ type FieldErrorType = {
   field: string;
 };
 
-export type AppResponse<T = UserResponse> = {
+export type AppBaseResponse<T = {}> = {
   resultCode: number;
   messages: string | string[];
   data: T;
   fieldsErrors: FieldErrorType[];
 };
+
+
+export type PropsWithChildren<P> = P & { children?: ReactNode };

@@ -1,15 +1,14 @@
-import { PrioritiesValue, StatusesValue } from "features/Task/model/task.types.ts";
 import { useId, useState, Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import "style.css";
-import { TaskPriorities, TaskStatuses } from "common/constants";
+
 
 type TaskPropertiesSelect = {
   id: string;
-  value: PrioritiesValue | StatusesValue;
+  value: any
   onChange?: () => void;
-  options: typeof TaskPriorities | typeof TaskStatuses;
+  options: any
   label?: string;
 };
 

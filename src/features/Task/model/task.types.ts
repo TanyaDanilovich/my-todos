@@ -1,24 +1,10 @@
-export const TaskStatuses =
-  {
-    New: 0,
-    InProgress: 1,
-    Completed: 2,
-    Draft: 3
-  } as const;
+import { TaskPriorities, TaskStatuses } from "common/constants";
 
 
-export const TaskPriorities =
-  {
-    Low: 0,
-    Middle: 1,
-    Hi: 2,
-    Urgently: 3,
-    Later: 4
-  } as const;
 
+export type TaskStatusesKeys = keyof typeof TaskStatuses;
+export type TaskPrioritiesKeys = keyof typeof TaskPriorities;
 
-type TaskStatusesKeys = keyof typeof TaskStatuses;
-type TaskPrioritiesKeys = keyof typeof TaskPriorities;
 
 export type TaskType = {
   description: string;

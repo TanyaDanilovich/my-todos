@@ -6,6 +6,7 @@ import { useAppSelector } from "app/store.ts";
 import "style.css";
 import { tasksActions } from "features/Task/model/tasksSlice.ts";
 import { TodoListType } from "features/todolist-list/model/todolist.types.ts";
+import { todoListsActions } from "features/todolist-list/model/todoListSlice.ts";
 
 type TodoListPropsType = TodoListType;
 
@@ -16,6 +17,10 @@ export const TodoList: FC<TodoListPropsType> = ({ id, title }) => {
   useEffect(() => {
     dispatch(tasksActions.setTasks(id));
   }, []);
+
+  const deleteTodolist = () => {
+    dispatch(todoListsActions.deleteTodolist(id));
+  };
 
   const renderedTasks = tasks.map((task) => {
     return (
@@ -38,7 +43,11 @@ export const TodoList: FC<TodoListPropsType> = ({ id, title }) => {
   return (
     <>
       <div className = "block p-6 bg-white border border-gray-200 rounded-lg shadow">
-        <h5 className = "mb-2 text-2xl font-bold tracking-tight text-gray-900 flex justify-center"> {title}</h5>
+        <div className = "flex items-center justify-around">
+          <h5 className = "mb-2 text-2xl font-bold tracking-tight text-gray-900 flex justify-center"> {title}</h5>
+          <button onClick = {deleteTodolist}>Delete</button>
+        </div>
+
 
         <div className = "flex flex-col">
           <div className = " sm:mx-0.5 lg:mx-0.5">
@@ -59,6 +68,7 @@ export const TodoList: FC<TodoListPropsType> = ({ id, title }) => {
                     <th scope = "col" className = "text-sm font-medium text-gray-900 px-6 py-4 text-left">
                       status
                     </th>
+                    <th scope = "col" className = "text-sm font-medium text-gray-900 px-6 py-4 text-left"></th>
                   </tr>
                   </thead>
 

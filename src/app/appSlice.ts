@@ -1,22 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit";
 import { StatusType } from "../common/types/common.types.ts";
+import { createAppSlice } from "common/utils/createAppSlice.ts";
 
 const initialState: InitialStateType = {
   isInitialized: false,
   error: null,
-  status: "idle",
+  status: "idle"
 };
-export const slice = createSlice({
+export const slice = createAppSlice({
   name: "app",
   initialState,
-  reducers: {
-    setInitialized: (state) => {
-      state.isInitialized = true;
-    },
+  reducers: (create) => {
+    return {
+      setInitialized: create.reducer((state) => {
+        state.isInitialized = true;
+      })
+    };
   },
+
   extraReducers: (builder) => {
     builder;
-  },
+  }
 });
 
 export const appSlice = slice.reducer;

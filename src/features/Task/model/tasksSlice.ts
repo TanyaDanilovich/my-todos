@@ -37,6 +37,9 @@ export const slice = createAppSlice({
       .addCase(todoListsActions.fetchTodoLists.fulfilled, (state, action) => {
         action.payload.todoLists.forEach((tl) => (state[tl.id] = []));
       })
+      .addCase(todoListsActions.createTodolist.fulfilled, (state, action) => {
+        state[action.payload.todolist.id] = [];
+      })
       .addCase(authActions.logOut.fulfilled, () => {
         return slice.getInitialState();
       });
