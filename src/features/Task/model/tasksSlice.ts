@@ -1,6 +1,6 @@
 import { todoListsActions } from "features/todolist-list/model/todoListSlice.ts";
 import { TaskType } from "features/Task/model/task.types.ts";
-import { CreateTaskArg, tasksAPI } from "features/Task/api/tasks/tasksAPI.ts";
+import { CreateTaskArg, DeleteTaskArg, tasksAPI } from "features/Task/api/tasks/tasksAPI.ts";
 import { createAppSlice } from "common/utils/createAppSlice.ts";
 import { authActions } from "auth/authSlice.ts";
 
@@ -15,37 +15,48 @@ export const slice = createAppSlice({
   reducers: ((create) => {
     return {
       setTasks: create.asyncThunk<string, {
-        todolistId: string;
+        todoListId: string;
         tasks: TaskType[]
-      }>(async (todolistId) => {
+      }>(async (todoListId) => {
 
-        const res = await tasksAPI.fetchTasks(todolistId);
-        return { todolistId, tasks: res.data.items };
+        const res = await tasksAPI.fetchTasks(todoListId);
+        return { todoListId, tasks: res.data.items };
 
 
       }, {
         fulfilled: (state, action) => {
-          state[action.payload.todolistId] = action.payload.tasks;
+          state[action.payload.todoListId] = action.payload.tasks;
         }
       }),
       createTask: create.asyncThunk<CreateTaskArg, {
-        todolistId: string;
+        todoListId: string;
         task: TaskType
-      }>(async ({ todolistId, taskTitle }, { rejectWithValue }) => {
-        const res = await tasksAPI.createTask({ todolistId, taskTitle });
+      }>(async (arg, { rejectWithValue }) => {
+        const res = await tasksAPI.createTask(arg);
         if (res.data.resultCode === 0) {
           return {
-            todolistId: todolistId,
+            todoListId: arg.todoListId,
             task: res.data.data.item
           };
         } else {
           return rejectWithValue(res.data.messages);
         }
-
-
       }, {
         fulfilled: (state, action) => {
-          state[action.payload.todolistId].push(action.payload.task);
+          state[action.payload.todoListId].push(action.payload.task);
+        }
+      }),
+      deleteTask: create.asyncThunk<DeleteTaskArg, DeleteTaskArg>(async (arg, { rejectWithValue }) => {
+        const res = await tasksAPI.deleteTask(arg);
+        if (res.data.resultCode === 0) {
+          return arg;
+        } else {
+          return rejectWithValue(res.data.messages);
+        }
+      }, {
+        fulfilled: (state, action) => {
+          const index = state[action.payload.todoListId].findIndex(task => task.id === action.payload.taskId);
+          if (index !== -1) state[action.payload.todoListId].splice(index, 1);
         }
       })
     };

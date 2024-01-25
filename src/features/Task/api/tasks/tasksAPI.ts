@@ -4,13 +4,16 @@ import { AppBaseResponse } from "common/types/common.types.ts";
 import { AxiosResponse } from "axios";
 
 export const tasksAPI = {
-  fetchTasks: (todolistId: string) => {
-    return instance.get<FetchTasksResponse>(`todo-lists/${todolistId}/tasks`);
+  fetchTasks: (todoListId: string) => {
+    return instance.get<FetchTasksResponse>(`todo-lists/${todoListId}/tasks`);
   },
   createTask: (arg: CreateTaskArg) => {
     return instance.post<null, AxiosResponse<AppBaseResponse<{
       item: TaskType
-    }>>, { title: string }>(`todo-lists/${arg.todolistId}/tasks`, { title: arg.taskTitle });
+    }>>, { title: string }>(`todo-lists/${arg.todoListId}/tasks`, { title: arg.taskTitle });
+  },
+  deleteTask:(arg:DeleteTaskArg)=>{
+    return instance.delete<AppBaseResponse>(`/todo-lists/${arg.todoListId}/tasks/${arg.taskId}`)
   }
 };
 
@@ -21,4 +24,5 @@ export type FetchTasksResponse = {
 };
 
 
-export type CreateTaskArg = { todolistId: string, taskTitle: string };
+export type CreateTaskArg = { todoListId: string, taskTitle: string };
+export type DeleteTaskArg = { todoListId: string, taskId: string };

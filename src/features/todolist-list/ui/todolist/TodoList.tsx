@@ -8,6 +8,7 @@ import { tasksActions } from "features/Task/model/tasksSlice.ts";
 import { TodoListType } from "features/todolist-list/model/todolist.types.ts";
 import { todoListsActions } from "features/todolist-list/model/todoListSlice.ts";
 import { AddTask } from "common/components/AddTask/AddTaskForm.tsx";
+import { DeleteTaskArg } from "features/Task/api/tasks/tasksAPI.ts";
 
 type TodoListPropsType = TodoListType;
 
@@ -24,11 +25,15 @@ export const TodoList: FC<TodoListPropsType> = ({ id, title }) => {
   };
 
   const addTask = (title: string) => {
-    dispatch(tasksActions.createTask({ todolistId: id, taskTitle: title }));
+    dispatch(tasksActions.createTask({ todoListId: id, taskTitle: title }));
+  };
+
+  const deleteTask = (arg: DeleteTaskArg) => {
+    dispatch(tasksActions.deleteTask(arg));
   };
 
   const renderedTasks = tasks.map((task) => {
-   // console.log(task);
+    // console.log(task);
     return (
       <Task
         key = {task.id}
@@ -42,6 +47,7 @@ export const TodoList: FC<TodoListPropsType> = ({ id, title }) => {
         todoListId = {task.todoListId}
         order = {task.order}
         addedDate = {task.addedDate}
+        deleteTask={deleteTask}
       />
     );
   });

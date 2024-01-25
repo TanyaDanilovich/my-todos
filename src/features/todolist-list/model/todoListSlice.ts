@@ -51,17 +51,17 @@ export const slice = createAppSlice({
         }
       }),
       deleteTodolist: creators.asyncThunk<string, {
-        todolistId: string
-      }>(async (todolistId, { rejectWithValue }) => {
-        const res = await todolistsAPI.deleteTodolist(todolistId);
+        todoListId: string
+      }>(async (todoListId, { rejectWithValue }) => {
+        const res = await todolistsAPI.deleteTodolist(todoListId);
         if (res.data.resultCode === 0) {
-          return { todolistId };
+          return { todoListId };
         } else {
           return rejectWithValue(res.data.messages);
         }
       }, {
         fulfilled: (state, action) => {
-          const index = state.todoLists.findIndex(todo => todo.id === action.payload.todolistId);
+          const index = state.todoLists.findIndex(todo => todo.id === action.payload.todoListId);
           if (index !== -1) state.todoLists.splice(index, 1);
         }
       })

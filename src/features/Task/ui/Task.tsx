@@ -4,11 +4,17 @@ import "style.css";
 import { TaskDatePicker } from "common/components/TaskDatePicker/TaskDatePicker.tsx";
 import { TrashIcon } from "common/components/icons/TrashIcon.tsx";
 import { TaskPriorities, TaskStatuses } from "common/constants";
+import { DeleteTaskArg } from "features/Task/api/tasks/tasksAPI.ts";
 
 
-type TaskPropsType = TaskType;
+type TaskPropsType = TaskType & {
+  deleteTask: (arg:DeleteTaskArg) => void
+};
 
-export const Task = ({ title, priority, status }: TaskPropsType) => {
+export const Task = ({ id,title, priority, status,todoListId, deleteTask }: TaskPropsType) => {
+
+    const onDeleteTask=()=>deleteTask({todoListId: todoListId,taskId:id})
+
   return (
     <tr className = "bg-white border-b transition duration-300 ease-in-out">
       <td className = "px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">{title}</td>
@@ -24,7 +30,7 @@ export const Task = ({ title, priority, status }: TaskPropsType) => {
         <TaskPropertiesSelect id = {"task-status-select"} value = {status} options = {TaskStatuses} />
       </td>
       <td>
-        <button>
+        <button onClick={onDeleteTask}>
           <TrashIcon />
         </button>
 
