@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 
 export type StatusType = "idle" | "loading" | "success " | "error";
 
+export type Mode = "edit" | "view"
 
 type FieldErrorType = {
   error: string;

@@ -44,7 +44,7 @@ export const TodolistList = (
     return <Navigate to = {"/login"} />;
   }
   return <div className = "mx-auto px-4 sm:px-6 lg:px-8">
-    <AddItem value = {""} addItem = {addTodolist}><GreedPlus /></AddItem>
+    <AddItem addItem = {addTodolist}><GreedPlus /></AddItem>
     <div>{renderedTodoLists}</div>
     ;
   </div>;

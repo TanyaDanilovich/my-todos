@@ -1,4 +1,4 @@
-import { TodoListResponse, TodoListType } from "features/todolist-list/model/todolist.types.ts";
+import { TodoListResponse, TodoListType, TodoListUpdateArg } from "features/todolist-list/model/todolist.types.ts";
 import { todolistsAPI } from "features/todolist-list/api/todolistsAPI.ts";
 import { createAppSlice } from "common/utils/createAppSlice.ts";
 import { authActions } from "auth/authSlice.ts";
@@ -50,10 +50,11 @@ export const slice = createAppSlice({
           });
         }
       }),
+
       deleteTodolist: creators.asyncThunk<string, {
         todoListId: string
       }>(async (todoListId, { rejectWithValue }) => {
-        const res = await todolistsAPI.deleteTodolist(todoListId);
+        const res = await todolistsAPI.deleteTodoList(todoListId);
         if (res.data.resultCode === 0) {
           return { todoListId };
         } else {
@@ -63,6 +64,20 @@ export const slice = createAppSlice({
         fulfilled: (state, action) => {
           const index = state.todoLists.findIndex(todo => todo.id === action.payload.todoListId);
           if (index !== -1) state.todoLists.splice(index, 1);
+        }
+      }),
+
+      updateTodoListTitle: creators.asyncThunk<TodoListUpdateArg, TodoListUpdateArg>(async (arg: TodoListUpdateArg, { rejectWithValue }) => {
+        const res = await todolistsAPI.updateTodoList(arg);
+        if (res.data.resultCode === 0) {
+          return arg;
+        } else {
+          return rejectWithValue(res.data.messages);
+        }
+      }, {
+        fulfilled: (state, action) => {
+          const index = state.todoLists.findIndex(tl => tl.id === action.payload.todoListId);
+          if (index !== -1) state.todoLists[index].title = action.payload.title;
         }
       })
     };

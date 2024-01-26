@@ -9,6 +9,7 @@ import { TodoListType } from "features/todolist-list/model/todolist.types.ts";
 import { todoListsActions } from "features/todolist-list/model/todoListSlice.ts";
 import { AddTask } from "common/components/AddTask/AddTaskForm.tsx";
 import { DeleteTaskArg } from "features/Task/api/tasks/tasksAPI.ts";
+import { EditableSpan } from "common/components/EditableSpan/EditableSpan.tsx";
 
 type TodoListPropsType = TodoListType;
 
@@ -23,11 +24,14 @@ export const TodoList: FC<TodoListPropsType> = ({ id, title }) => {
   const deleteTodolist = () => {
     dispatch(todoListsActions.deleteTodolist(id));
   };
+  const changeTodoListTitle = (newTitle: string) => {
+    dispatch(todoListsActions.updateTodoListTitle({ todoListId: id, title: newTitle }));
+  };
+
 
   const addTask = (title: string) => {
     dispatch(tasksActions.createTask({ todoListId: id, taskTitle: title }));
   };
-
   const deleteTask = (arg: DeleteTaskArg) => {
     dispatch(tasksActions.deleteTask(arg));
   };
@@ -47,7 +51,7 @@ export const TodoList: FC<TodoListPropsType> = ({ id, title }) => {
         todoListId = {task.todoListId}
         order = {task.order}
         addedDate = {task.addedDate}
-        deleteTask={deleteTask}
+        deleteTask = {deleteTask}
       />
     );
   });
@@ -56,7 +60,9 @@ export const TodoList: FC<TodoListPropsType> = ({ id, title }) => {
     <>
       <div className = "block p-6 bg-white border border-gray-200 rounded-lg shadow">
         <div className = "flex items-center justify-around">
-          <h5 className = "mb-2 text-2xl font-bold tracking-tight text-gray-900 flex justify-center"> {title}</h5>
+          <h5 className = "mb-2 text-2xl font-bold tracking-tight text-gray-900 flex justify-center">
+            <EditableSpan value = {title} onChange = {changeTodoListTitle} />
+          </h5>
           <button onClick = {deleteTodolist}>Delete</button>
         </div>
 

@@ -20,3 +20,8 @@ export type TodoListResponse = {
   addedDate: string;
   order: number;
 };
+
+export type TodoListUpdateArg = {
+  todoListId: string,
+  title: string
+}
