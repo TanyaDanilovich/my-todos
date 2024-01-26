@@ -1,13 +1,12 @@
 import { todoListsActions } from "features/todolist-list/model/todoListSlice.ts";
-import { TaskType } from "features/Task/model/task.types.ts";
-import { CreateTaskArg, DeleteTaskArg, tasksAPI } from "features/Task/api/tasks/tasksAPI.ts";
+import { TaskType, UpdateTask } from "features/Task/model/task.types.ts";
+import { CreateTaskArg, DeleteTaskArg, tasksAPI, UpdateTaskAPIModel } from "features/Task/api/tasks/tasksAPI.ts";
 import { createAppSlice } from "common/utils/createAppSlice.ts";
 import { authActions } from "auth/authSlice.ts";
+import { RootState } from "app/store.ts";
 
 
-export type TaskStateType = {
-  [key: string]: TaskType[]
-};
+export type TaskStateType = Record<string, TaskType[]>;
 
 export const slice = createAppSlice({
   name: "tasks",
@@ -57,6 +56,27 @@ export const slice = createAppSlice({
         fulfilled: (state, action) => {
           const index = state[action.payload.todoListId].findIndex(task => task.id === action.payload.taskId);
           if (index !== -1) state[action.payload.todoListId].splice(index, 1);
+        }
+      }),
+      updateTask: create.asyncThunk<UpdateTask, { task: TaskType }>(async (arg, { rejectWithValue, getState }) => {
+        const tasks = (getState() as RootState).tasks;
+        const task = tasks[arg.todoListId].find(task => task.id === arg.id);
+        if (task) {
+          const updateModel: UpdateTaskAPIModel = { ...task, ...arg };
+          const res = await tasksAPI.updateTask(updateModel);
+          if (res.data.resultCode === 0) {
+            return { task: res.data.data.item };
+          } else {
+            return rejectWithValue(res.data.messages);
+          }
+        } else {
+          return rejectWithValue("task insn't exist");
+        }
+
+      }, {
+        fulfilled: (state, action) => {
+          const index = state[action.payload.task.todoListId].findIndex(task => task.id === action.payload.task.id);
+          if (index !== -1) state[action.payload.task.todoListId][index] = action.payload.task;
         }
       })
     };

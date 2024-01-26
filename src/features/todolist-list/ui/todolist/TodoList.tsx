@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { useAppDispatch } from "common/hooks/reduxHook.ts";
 
-import { Task } from "../../../Task/ui/Task.tsx";
+import { Task } from "features/Task/ui/Task.tsx";
 import { useAppSelector } from "app/store.ts";
 import "style.css";
 import { tasksActions } from "features/Task/model/tasksSlice.ts";
@@ -52,6 +52,7 @@ export const TodoList: FC<TodoListPropsType> = ({ id, title }) => {
         order = {task.order}
         addedDate = {task.addedDate}
         deleteTask = {deleteTask}
+        completed={task.completed}
       />
     );
   });

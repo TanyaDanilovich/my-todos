@@ -1,4 +1,5 @@
 import { TaskPriorities, TaskStatuses } from "common/constants";
+import { UpdateTaskAPIModel } from "features/Task/api/tasks/tasksAPI.ts";
 
 
 export type TaskStatusesKeys = keyof typeof TaskStatuses;
@@ -16,4 +17,8 @@ export type TaskType = {
   todoListId: string;
   order: number;
   addedDate: string;
+  completed: boolean
 };
+
+export type UpdateTask = Partial<UpdateTaskAPIModel> & { id: string, todoListId: string }
+

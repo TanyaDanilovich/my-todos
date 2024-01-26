@@ -12,8 +12,11 @@ export const tasksAPI = {
       item: TaskType
     }>>, { title: string }>(`todo-lists/${arg.todoListId}/tasks`, { title: arg.taskTitle });
   },
-  deleteTask:(arg:DeleteTaskArg)=>{
-    return instance.delete<AppBaseResponse>(`/todo-lists/${arg.todoListId}/tasks/${arg.taskId}`)
+  deleteTask: (arg: DeleteTaskArg) => {
+    return instance.delete<AppBaseResponse>(`/todo-lists/${arg.todoListId}/tasks/${arg.taskId}`);
+  },
+  updateTask: (model: UpdateTaskAPIModel) => {
+    return instance.put<AppBaseResponse<{ item: TaskType }>>(`/todo-lists/${model.todoListId}/tasks/${model.id}`, model);
   }
 };
 
@@ -26,3 +29,7 @@ export type FetchTasksResponse = {
 
 export type CreateTaskArg = { todoListId: string, taskTitle: string };
 export type DeleteTaskArg = { todoListId: string, taskId: string };
+
+export type UpdateTaskAPIModel = Omit<TaskType,  "order" | "addedDate">
+
+
