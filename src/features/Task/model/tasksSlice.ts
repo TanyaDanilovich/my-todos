@@ -42,7 +42,7 @@ export const slice = createAppSlice({
         }
       }, {
         fulfilled: (state, action) => {
-          state[action.payload.todoListId].push(action.payload.task);
+          state[action.payload.todoListId].unshift(action.payload.task);
         }
       }),
       deleteTask: create.asyncThunk<DeleteTaskArg, DeleteTaskArg>(async (arg, { rejectWithValue }) => {

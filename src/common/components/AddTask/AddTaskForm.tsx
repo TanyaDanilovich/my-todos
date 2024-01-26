@@ -10,18 +10,17 @@ type Props = {
 export const AddTask = ({ addTask }: Props) => {
   const [isAddMode, setAddMode] = useState<boolean>(false);
 
-  const onAddMode = () => setAddMode(true);
-  const ofAddMode = (title:string) => {
+  const activateAddMode = () => setAddMode(true);
+  const deactivateAddMode = (title: string) => {
     setAddMode(false);
-   addTask(title);
-
+    addTask(title);
   };
 
 
   return isAddMode
-    ? <AddItem addItem = {ofAddMode}><PlusIcon /></AddItem>
+    ? <AddItem addItem = {deactivateAddMode} autofocus = {true}><PlusIcon /></AddItem>
     : <div>
-      <button onClick = {onAddMode}><PlusIcon /></button>
+      <button onClick = {activateAddMode}><PlusIcon /></button>
     </div>;
 };
 
