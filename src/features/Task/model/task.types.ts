@@ -20,5 +20,8 @@ export type TaskType = {
   completed: boolean
 };
 
-export type UpdateTask = Partial<UpdateTaskAPIModel> & { id: string, todoListId: string }
+export type UpdateTask = Partial<UpdateTaskAPIModel> & {
+  id: string,
+  todoListId: string
+}
 

@@ -15,14 +15,17 @@ type TaskPropsType = TaskType & {
   deleteTask: (arg: DeleteTaskArg) => void
 };
 
-export const Task = ({ id, title, priority, status, todoListId, deleteTask }: TaskPropsType) => {
+export const Task = ({ id, title, priority, status, todoListId, deleteTask, deadline }: TaskPropsType) => {
   const dispatch = useAppDispatch();
   const updateTask = (arg: UpdateTask) => dispatch(tasksActions.updateTask(arg));
   const onDeleteTask = () => deleteTask({ todoListId: todoListId, taskId: id });
 
-  const updateTitle = (newTitle: string) => updateTask({ id, todoListId, title: newTitle });
-  const updatePriority = (newPriority: TaskPrioritiesValues) => updateTask({ id, todoListId, priority: newPriority });
-  const updateStatus = (newStatus: TaskStatusesValues) => updateTask({ id, todoListId, status: newStatus });
+  const updateTitle = (title: string) => updateTask({ id, todoListId, title });
+  const updatePriority = (priority: TaskPrioritiesValues) => updateTask({ id, todoListId, priority });
+  const updateStatus = (status: TaskStatusesValues) => updateTask({ id, todoListId, status });
+  const updateDeadlineDate = (deadline: string) => updateTask({ id, todoListId, deadline });
+
+
 
   return (
     <tr className = "bg-white border-b transition duration-300 ease-in-out">
@@ -30,16 +33,16 @@ export const Task = ({ id, title, priority, status, todoListId, deleteTask }: Ta
         <EditableSpan value = {title} onChange = {updateTitle} />
       </td>
       <td className = "text-sm text-gray-900 font-light px-4 py-2 whitespace-nowrap">
-        <TaskDatePicker />
+        <TaskDatePicker value = {deadline} onChange = {updateDeadlineDate} id = {`${id}-deadline-date`} />
       </td>
       <td className = "text-sm text-gray-900 font-light px-4 py-2 whitespace-nowrap">
         {" "}
         <TaskPropertiesSelect onChange = {updatePriority} options = {TaskPriorities} value = {priority}
-                              id = {"task-priority-select"} />
+                              id = {`${id}-priority`} />
       </td>
       <td className = "text-sm text-gray-900 font-light px-4 py-2 whitespace-nowrap">
         {" "}
-        <TaskPropertiesSelect onChange = {updateStatus} id = {"task-status-select"} value = {status}
+        <TaskPropertiesSelect onChange = {updateStatus} id = {`${id}-status`} value = {status}
                               options = {TaskStatuses} />
       </td>
       <td>
