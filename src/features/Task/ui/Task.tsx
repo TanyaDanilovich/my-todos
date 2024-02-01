@@ -8,6 +8,7 @@ import { DeleteTaskArg } from "features/Task/api/tasks/tasksAPI.ts";
 import { useAppDispatch } from "common/hooks/reduxHook.ts";
 import { tasksActions } from "features/Task/model/tasksSlice.ts";
 import { EditableSpan } from "common/components/EditableSpan/EditableSpan.tsx";
+import { TaskPrioritiesValues, TaskStatusesValues } from "common/types/common.types.ts";
 
 
 type TaskPropsType = TaskType & {
@@ -20,6 +21,8 @@ export const Task = ({ id, title, priority, status, todoListId, deleteTask }: Ta
   const onDeleteTask = () => deleteTask({ todoListId: todoListId, taskId: id });
 
   const updateTitle = (newTitle: string) => updateTask({ id, todoListId, title: newTitle });
+  const updatePriority = (newPriority: TaskPrioritiesValues) => updateTask({ id, todoListId, priority: newPriority });
+  const updateStatus = (newStatus: TaskStatusesValues) => updateTask({ id, todoListId, status: newStatus });
 
   return (
     <tr className = "bg-white border-b transition duration-300 ease-in-out">
@@ -31,11 +34,13 @@ export const Task = ({ id, title, priority, status, todoListId, deleteTask }: Ta
       </td>
       <td className = "text-sm text-gray-900 font-light px-4 py-2 whitespace-nowrap">
         {" "}
-        <TaskPropertiesSelect options = {TaskPriorities} value = {priority} id = {"task-priority-select"} />
+        <TaskPropertiesSelect onChange = {updatePriority} options = {TaskPriorities} value = {priority}
+                              id = {"task-priority-select"} />
       </td>
       <td className = "text-sm text-gray-900 font-light px-4 py-2 whitespace-nowrap">
         {" "}
-        <TaskPropertiesSelect id = {"task-status-select"} value = {status} options = {TaskStatuses} />
+        <TaskPropertiesSelect onChange = {updateStatus} id = {"task-status-select"} value = {status}
+                              options = {TaskStatuses} />
       </td>
       <td>
         <button onClick = {onDeleteTask}>
